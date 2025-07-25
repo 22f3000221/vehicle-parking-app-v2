@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monthly Parking Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .header { background-color: #f4f4f4; padding: 20px; text-align: center; }
+        .content { padding: 20px; }
+        .stats { margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Monthly Parking Report</h1>
+        <h2>{{ month }}</h2>
+    </div>
+    
+    <div class="content">
+        <div class="stats">
+            <h3>Summary</h3>
+            <p><strong>Total Bookings:</strong> {{ total_bookings }}</p>
+            <p><strong>Total Amount Spent:</strong> ₹{{ "%.2f"|format(total_spent) }}</p>
+            <p><strong>Most Used Parking Lot:</strong> {{ most_used_lot }}</p>
+        </div>
+        
+        <h3>Transaction Details</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Parking Lot</th>
+                    <th>Spot</th>
+                    <th>Vehicle</th>
+                    <th>Duration</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td>{{ t.start_time.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ t.address }}</td>
+                    <td>{{ t.spot_id }}</td>
+                    <td>{{ t.display_registration }}</td>
+                    <td>{{t.duration_str}}</td>
+                    <td>₹{{ "%.2f"|format(t.amount) if t.amount else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
